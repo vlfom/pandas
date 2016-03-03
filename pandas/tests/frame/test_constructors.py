@@ -1999,3 +1999,13 @@ class TestDataFrameConstructors(tm.TestCase, TestData):
         self.assertTrue(np.array_equal(result.columns, ['bar']))
         self.assertEqual(len(result), 0)
         self.assertEqual(result.index.name, 'foo')
+
+    def test_unhashable_columns(self):
+        self.assertRaises(TypeError,
+                          DataFrame([0], columns=[[0]]))
+        self.assertRaises(TypeError,
+                          DataFrame([0, 1], columns=[[0, 1], [2, 3]]))
+        self.assertRaises(TypeError,
+                          DataFrame([0, 1, 2], columns=[{'a': 2}]))
+        self.assertRaises(TypeError,
+                          DataFrame([0, 1, 2], columns=[0, 1, {'c': 2}]))

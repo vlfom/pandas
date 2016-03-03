@@ -3272,6 +3272,13 @@ def _ensure_index(index_like, copy=False):
     if hasattr(index_like, 'name'):
         return Index(index_like, name=index_like.name, copy=copy)
 
+    import collections
+    if isinstance(index_like, collections.Iterable):
+        for item in index_like:
+            if not isinstance(item, collections.Hashable):
+                raise TypeError(
+                    "Object of unhashable type can't be index label")
+
     # must check for exactly list here because of strict type
     # check in clean_index_list
     if isinstance(index_like, list):
